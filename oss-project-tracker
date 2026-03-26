@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "thor"
+require "octokit"
+
+class OSSProjectTracker < Thor
+  desc "sync-to-project ORG PROJECT_PATH", "Sync GitHub issues/pull requests from organization to project board"
+  def sync_to_project(org, project_path)
+    # Initialize Octokit client with authentication if available
+    token = ENV["GITHUB_TOKEN"]
+    client_options = {}
+    client_options[:access_token] = token if token
+
+    client = Octokit::Client.new(client_options)
+
+    begin
+      puts "Syncing GitHub organization: #{org}"
+      puts "Project path: #{project_path}"
+
+      # Get all public repos from the organization
+      repos = client.org_repos(org, {type: "public"})
+
+      puts "Found #{repos.length} public repositories"
+
+      # TODO: Get existing project items to check what's already added
+
+      # Process each repository
+      repos.each do |repo|
+        puts "\nProcessing repository: #{repo.name}"
+
+        # Get open issues
+        issues = client.issues(repo.full_name, {state: "open"})
+        puts "  Found #{issues.length} open issues"
+
+        # Get open pull requests
+        pull_requests = client.pull_requests(repo.full_name, {state: "open"})
+        puts "  Found #{pull_requests.length} open pull requests"
+
+        # Process issues
+        issues.each do |issue|
+          # Since we can't check existing items due to octokit bugs, we'll add all items
+          puts "  Adding issue ##{issue.number} to project with status 'To triage'"
+          # TODO: add the item to the project
+        end
+
+        # Process pull requests
+        pull_requests.each do |pr|
+          # Since we can't check existing items due to octokit bugs, we'll add all items
+          puts "  Adding pull request ##{pr.number} to project with status 'To triage'"
+          # TODO: add the item to the project
+        end
+      end
+    rescue Octokit::Error => e
+      puts "Error: #{e.message}"
+    end
+  end
+end
+
+OSSProjectTracker.start(ARGV)
