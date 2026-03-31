@@ -47,8 +47,11 @@ class OSSProjectTracker < Thor
 
         # Process pull requests
         pull_requests.each do |pr|
+          # Check if this is a Dependabot PR
+          is_dependabot = pr.user&.login == "dependabot[bot]"
+
           # Since we can't check existing items due to octokit bugs, we'll add all items
-          puts "  Adding pull request ##{pr.number} to project with status 'To triage'"
+          puts "  Adding pull request ##{pr.number} to project with status 'To triage' (Dependabot: #{is_dependabot})"
           # TODO: add the item to the project
         end
       end
