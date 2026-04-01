@@ -14,6 +14,7 @@ class OSSProjectTracker < Thor
     client_options[:access_token] = token if token
 
     client = Octokit::Client.new(client_options)
+    client.auto_paginate = true
 
     begin
       puts "Syncing GitHub organization: #{org}"
@@ -22,7 +23,9 @@ class OSSProjectTracker < Thor
       # Get all public repos from the organization
       repos = client.org_repos(org, {type: "public"})
 
-      puts "Found #{repos.length} public repositories"
+      repos = repos.select { |repo| !repo.archived }
+
+      puts "Found #{repos.length} public, non-archived repositories"
 
       # TODO: Get existing project items to check what's already added
 
