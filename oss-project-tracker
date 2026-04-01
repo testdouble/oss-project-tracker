@@ -44,7 +44,7 @@ class OSSProjectTracker < Thor
         # Process issues
         issues.each do |issue|
           # Since we can't check existing items due to octokit bugs, we'll add all items
-          puts "  Adding issue ##{issue.number} to project with status 'To triage'"
+          puts "  Adding issue ##{issue.number} to project with status 'To triage' (Created: #{issue.created_at})"
           # TODO: add the item to the project
         end
 
@@ -54,7 +54,7 @@ class OSSProjectTracker < Thor
           is_dependabot = pr.user&.login == "dependabot[bot]"
 
           # Since we can't check existing items due to octokit bugs, we'll add all items
-          puts "  Adding pull request ##{pr.number} to project with status 'To triage' (Dependabot: #{is_dependabot})"
+          puts "  Adding pull request ##{pr.number} to project with status 'To triage' (Dependabot: #{is_dependabot}, Created: #{pr.created_at})"
           # TODO: add the item to the project
         end
       end
