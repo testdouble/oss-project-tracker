@@ -33,6 +33,18 @@ class OSSProjectTracker < Thor
       repos.each do |repo|
         puts "\nProcessing repository: #{repo.name}"
 
+        # Get the last successful check run for the default branch
+        default_branch = repo.default_branch
+        check_runs_resp = client.get("/repos/#{repo.full_name}/commits/#{default_branch}/check-runs")
+        successful_check_runs = check_runs_resp.check_runs.select { |s| s.conclusion == "success" }
+        last_successful = successful_check_runs.max_by { |s| s.started_at }
+
+        if last_successful
+          puts "  Last successful check run: #{last_successful.started_at}"
+        else
+          puts "  No successful check runs found"
+        end
+
         # Get open issues
         issues = client.issues(repo.full_name, {state: "open"})
         puts "  Found #{issues.length} open issues"
