@@ -46,6 +46,14 @@ GITHUB_TOKEN=your_personal_access_token ./oss-project-tracker sync-to-project OR
 
 This allows for higher rate limits and access to private repositories when needed.
 
+### Functionality
+
+The tool will:
+1. Fetch all public repositories from the specified organization
+2. Retrieve all open issues and pull requests from those repositories
+3. Add each issue and pull request to the specified project board in the "To triage" column
+4. Skip items that are already in the project (based on item ID)
+
 ## Structure
 
 - `oss-project-tracker` - Main executable for syncing OSS projects (with octokit)

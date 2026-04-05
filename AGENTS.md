@@ -43,12 +43,12 @@ bundle install
 
 ### Linting and formatting
 ```bash
-bundle exec standard
+bundle exec standardrb
 ```
 
 To fix issues automatically:
 ```bash
-bundle exec standard --fix
+bundle exec standardrb --fix
 ```
 
 ## Code Organization
