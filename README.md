@@ -1,17 +1,17 @@
-# Ruby Project Scaffold
+# Node.js Project
 
-This project is a Ruby project with multiple executables that use the octokit gem to interact with the GitHub API.
+This project is a Node.js application that uses the octokit library to interact with the GitHub API.
 
 ## Requirements
 
-- Ruby 4.0.2
-- Bundler
+- Node.js 24.14.1
+- npm
 
 ## Setup
 
 1. Install dependencies:
    ```
-   bundle install
+   npm install
    ```
 
 2. Run the script:
@@ -21,7 +21,7 @@ This project is a Ruby project with multiple executables that use the octokit ge
 
 3. Run the linter/formatter:
    ```
-   bundle exec standardrb
+   npm run lint
    ```
 
 ## Usage
@@ -56,7 +56,6 @@ The tool will:
 
 ## Structure
 
-- `oss-project-tracker` - Main executable for syncing OSS projects (with octokit)
-- `script/test` - Script to demonstrate standard usage
-- `Gemfile` - Dependencies including octokit, thor, and standard gems
-- `.ruby-version` - Ruby version specification
+- `oss-project-tracker` - Main executable for syncing OSS projects (with Commander and Octokit)
+- `lib/index.js` - Core library code with syncToProject function
+- `package.json` - Dependencies including octokit, commander, and standard

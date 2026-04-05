@@ -1,79 +1,21 @@
-#!/usr/bin/env ruby
-# frozen_string_literal: true
+#!/usr/bin/env node
+import { Command } from 'commander'
+import { syncToProject } from './lib/index.js'
 
-require "bundler/setup"
-require "thor"
-require "octokit"
+const program = new Command()
 
-class OSSProjectTracker < Thor
-  desc "sync-to-project ORG PROJECT_PATH", "Sync GitHub issues/pull requests from organization to project board"
-  def sync_to_project(org, project_path)
-    # Initialize Octokit client with authentication if available
-    token = ENV["GITHUB_TOKEN"]
-    client_options = {}
-    client_options[:access_token] = token if token
+program
+  .name('oss-project-tracker')
+  .description('Sync GitHub issues and pull requests from an organization to a project board')
+  .version('1.0.0')
 
-    client = Octokit::Client.new(client_options)
-    client.auto_paginate = true
+program
+  .command('sync-to-project')
+  .description('Sync GitHub issues/pull requests from organization to project board')
+  .argument('<org>', 'GitHub organization name')
+  .argument('<project-path>', 'Project path (e.g., owner/repo/PROJECT_ID or owner/PROJECT_ID)')
+  .action(async (org, projectPath) => {
+    await syncToProject(org, projectPath)
+  })
 
-    begin
-      puts "Syncing GitHub organization: #{org}"
-      puts "Project path: #{project_path}"
-
-      # Get all public repos from the organization
-      repos = client.org_repos(org, {type: "public"})
-
-      repos = repos.select { |repo| !repo.archived }
-
-      puts "Found #{repos.length} public, non-archived repositories"
-
-      # TODO: Get existing project items to check what's already added
-
-      # Process each repository
-      repos.each do |repo|
-        puts "\nProcessing repository: #{repo.name}"
-
-        # Get the last successful check run for the default branch
-        default_branch = repo.default_branch
-        check_runs_resp = client.get("/repos/#{repo.full_name}/commits/#{default_branch}/check-runs")
-        successful_check_runs = check_runs_resp.check_runs.select { |s| s.conclusion == "success" }
-        last_successful = successful_check_runs.max_by { |s| s.started_at }
-
-        if last_successful
-          puts "  Last successful check run: #{last_successful.started_at}"
-        else
-          puts "  No successful check runs found"
-        end
-
-        # Get open issues
-        issues = client.issues(repo.full_name, {state: "open"})
-        puts "  Found #{issues.length} open issues"
-
-        # Get open pull requests
-        pull_requests = client.pull_requests(repo.full_name, {state: "open"})
-        puts "  Found #{pull_requests.length} open pull requests"
-
-        # Process issues
-        issues.each do |issue|
-          # Since we can't check existing items due to octokit bugs, we'll add all items
-          puts "  Adding issue ##{issue.number} to project with status 'To triage' (Created: #{issue.created_at})"
-          # TODO: add the item to the project
-        end
-
-        # Process pull requests
-        pull_requests.each do |pr|
-          # Check if this is a Dependabot PR
-          is_dependabot = pr.user&.login == "dependabot[bot]"
-
-          # Since we can't check existing items due to octokit bugs, we'll add all items
-          puts "  Adding pull request ##{pr.number} to project with status 'To triage' (Dependabot: #{is_dependabot}, Created: #{pr.created_at})"
-          # TODO: add the item to the project
-        end
-      end
-    rescue Octokit::Error => e
-      puts "Error: #{e.message}"
-    end
-  end
-end
-
-OSSProjectTracker.start(ARGV)
+program.parse()

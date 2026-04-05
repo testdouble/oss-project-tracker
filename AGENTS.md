@@ -1,39 +1,36 @@
 # AGENTS.md
 
-This document provides essential information for agents working with this Ruby project to help them understand the codebase structure, conventions, and operational patterns.
+This document provides essential information for agents working with this Node.js project to help them understand the codebase structure, conventions, and operational patterns.
 
 ## Project Overview
 
-This is a Ruby project that uses the Octokit gem to interact with the GitHub API. It provides one executable:
+This is a Node.js project that uses the Octokit library to interact with the GitHub API. It provides one executable:
 1. `oss-project-tracker` - Main executable for syncing GitHub issues and pull requests from an organization to a project board
 
 ## Key Technologies
 
-- **Ruby 4.0.2** - The project requires Ruby 4.0.2
-- **Octokit** - GitHub API client library
-- **Thor** - Command-line interface framework
-- **Standard** - Ruby linter and formatter
-- **Bundler** - Dependency management
+- **Node.js 24.14.1** - The project requires Node.js 24.14.1
+- **octokit 5.0.5** - GitHub API client library
+- **Commander 14.0.3** - Command-line interface framework
+- **Standard 17.1.2** - JavaScript linter and formatter
 
 ## Project Structure
 
 ```
 .
 ├── oss-project-tracker          # Main executable for syncing OSS projects
-├── bin/                         # CLI binaries (currently empty)
-├── lib/                         # Library code (currently empty)
-├── script/test                  # Script to demonstrate standard usage
-├── Gemfile                      # Dependencies including octokit, thor, and standard gems
-├── Gemfile.lock                 # Locked dependencies
+├── lib/
+│   └── index.js                 # Core library code with syncToProject function
+├── package.json                 # Dependencies and scripts
 ├── README.md                    # Project documentation
-├── .ruby-version                # Ruby version specification
+└── AGENTS.md                    # This file
 ```
 
 ## Essential Commands
 
 ### Setup
 ```bash
-bundle install
+npm install
 ```
 
 ### Running the main executable
@@ -43,18 +40,18 @@ bundle install
 
 ### Linting and formatting
 ```bash
-bundle exec standardrb
+npm run lint
 ```
 
 To fix issues automatically:
 ```bash
-bundle exec standardrb --fix
+npm run lint:fix
 ```
 
 ## Code Organization
 
-- The main executable (`oss-project-tracker`) is a Thor-based CLI application
-- Uses Octokit for GitHub API interactions
+- The main executable (`oss-project-tracker`) is a Commander-based CLI application
+- Uses octokit for GitHub API interactions
 - Implements a sync-to-project command that:
   - Fetches public repositories from a GitHub organization
   - Retrieves open issues and pull requests from each repository
@@ -62,22 +59,23 @@ bundle exec standardrb --fix
 
 ## Naming Conventions and Style Patterns
 
-- Uses standard Ruby naming conventions
-- Thor-based CLI with descriptive command names
-- Uses frozen string literals (`# frozen_string_literal: true`)
-- Follows the standard Ruby project layout
+- Uses standard JavaScript naming conventions
+- ES modules (import/export syntax)
+- Async/await for asynchronous operations
+- Follows the standard JavaScript style guide
 
 ## Testing Approach
 
-The project uses the `standard` gem for code style checking. The test script demonstrates how to run the linter.
+The project uses the `standard` package for code style checking.
 
 ## Important Gotchas
 
-1. The project uses Octokit version 10.0
-2. Ruby version 4.0.2 is required
+1. The project uses octokit version 5.0.5
+2. Node.js version 24.14.1 is required
+3. Uses ES modules (type: "module" in package.json)
 
 ## Environment Requirements
 
-- Ruby 4.0.2
-- Bundler for dependency management
+- Node.js 24.14.1
+- npm for dependency management
 - GitHub API access (requires authentication for high-volume usage)
