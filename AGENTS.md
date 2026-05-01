@@ -35,7 +35,7 @@ npm install
 
 ### Running the main executable
 ```bash
-./oss-project-tracker sync-to-project ORG PROJECT_PATH
+./oss-project-tracker sync-to-project ORG PROJECT_NUMBER
 ```
 
 ### Linting and formatting

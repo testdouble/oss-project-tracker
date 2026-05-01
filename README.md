@@ -29,19 +29,19 @@ This project is a Node.js application that uses the octokit library to interact 
 The main executable `oss-project-tracker` can be used to sync GitHub issues and pull requests from an organization to a project board:
 
 ```
-./oss-project-tracker sync-to-project ORG PROJECT_PATH
+./oss-project-tracker sync-to-project ORG PROJECT_NUMBER
 ```
 
 Where:
 - `ORG` is the GitHub organization name
-- `PROJECT_PATH` is the full path to the project board (e.g., "owner/repo/PROJECT_ID" or "owner/PROJECT_ID")
+- `PROJECT_NUMBER` is the project number (e.g., 12) of the project within the organization
 
 ### Authentication
 
 The tool supports GitHub personal access token authentication via the `GITHUB_TOKEN` environment variable:
 
 ```
-GITHUB_TOKEN=your_personal_access_token ./oss-project-tracker sync-to-project ORG PROJECT_PATH
+GITHUB_TOKEN=your_personal_access_token ./oss-project-tracker sync-to-project ORG PROJECT_NUMBER
 ```
 
 This allows for higher rate limits and access to private repositories when needed.
