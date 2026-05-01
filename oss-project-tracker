@@ -13,9 +13,9 @@ program
   .command('sync-to-project')
   .description('Sync GitHub issues/pull requests from organization to project board')
   .argument('<org>', 'GitHub organization name')
-  .argument('<project-id>', 'Project id (e.g., 12) of project within organization')
-  .action(async (org, projectId) => {
-    await syncToProject(org, projectId)
+  .argument('<project-number>', 'Project number (e.g., 12) of project within organization')
+  .action(async (org, projectNumber) => {
+    await syncToProject(org, projectNumber)
   })
 
 program.parse()
