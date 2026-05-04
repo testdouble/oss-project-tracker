@@ -1,6 +1,6 @@
-# Node.js Project
+# oss-project-tracker
 
-This project is a Node.js application that uses the octokit library to interact with the GitHub API.
+This project is a Node.js application that uses the octokit library to interact with the GitHub API, syncing GitHub issues and pull requests from an organization to a project board.
 
 ## Requirements
 
