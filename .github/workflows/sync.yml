@@ -1,0 +1,22 @@
+name: Sync OSS issues to project board
+
+on:
+  schedule:
+    - cron: "0 13 * * *"  # daily at 13:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - run: npm ci
+
+      - run: ./oss-project-tracker sync-to-project testdouble 12
+        env:
+          GITHUB_TOKEN: ${{ secrets.OSS_TRACKER_PROJECT_TOKEN }}
