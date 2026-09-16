@@ -4,7 +4,7 @@ This project is a Node.js application that uses the octokit library to interact 
 
 ## Requirements
 
-- Node.js 24.14.1
+- Node.js
 - npm
 
 ## Setup

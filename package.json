@@ -24,8 +24,5 @@
   },
   "devDependencies": {
     "standard": "^17.1.2"
-  },
-  "engines": {
-    "node": "24.14.1"
   }
 }
